@@ -1,0 +1,88 @@
+$blackTile: rgb(17, 97, 17);
+$whiteTile: rgb(233, 222, 158);
+$blackPieces: rgb(41, 40, 37);
+$whitePieces: rgb(209, 209, 209);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.game-stats {
+  flex-basis: 10%;
+  text-align: center;
+
+  &__text {
+    font-size: 1.25rem;
+  }
+}
+
+.board {
+  width: 600px;
+  height: 600px;
+
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+
+  border: 4px solid black;
+
+  &__tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__tile--black {
+    background-color: $blackTile;
+  }
+
+  &__tile--white {
+    background-color: $whiteTile;
+  }
+
+  &__tile--available {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: rgb(156, 156, 156);
+      border-radius: 50%;
+    }
+    cursor: pointer;
+  }
+}
+
+.pawn {
+  flex-basis: 90%;
+  height: 90%;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &--black {
+    background-color: $blackPieces;
+    border: 3px solid lighten($blackPieces, 25%);
+  }
+
+  &--white {
+    background-color: $whitePieces;
+    border: 3px solid darken($whitePieces, 25%);
+  }
+
+  &--active {
+    box-shadow: 0 0 6px 0 white;
+  }
+}
