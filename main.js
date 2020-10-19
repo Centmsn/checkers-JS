@@ -23,7 +23,10 @@ checkIfCapture = (color) => {
         leftTile.classList.contains(`board__tile--black`)
       ) {
         if (
-          boardTiles[leftTile.dataset.key - amountLeft].children.length !== 0
+          boardTiles[leftTile.dataset.key - amountLeft].children.length !== 0 ||
+          boardTiles[leftTile.dataset.key - amountLeft].classList.contains(
+            "board__tile--white"
+          )
         ) {
         } else {
           // add pawns to object
@@ -41,7 +44,11 @@ checkIfCapture = (color) => {
         rightTile.classList.contains(`board__tile--black`)
       ) {
         if (
-          boardTiles[rightTile.dataset.key - amountRight].children.length !== 0
+          boardTiles[rightTile.dataset.key - amountRight].children.length !==
+            0 ||
+          boardTiles[rightTile.dataset.key - amountRight].classList.contains(
+            "board__tile--white"
+          )
         ) {
         } else {
           // add pawns to object
@@ -52,7 +59,6 @@ checkIfCapture = (color) => {
       }
     }
   }
-  console.log(availablePawns);
   return availablePawns;
 };
 
@@ -109,13 +115,21 @@ const showPossibleMoves = (e) => {
       return;
     } else {
       //   if no capture available
-      const filteredTiles = boardTiles.filter(
-        (tile) =>
-          tile.dataset.key > e.target.parentNode.dataset.key &&
-          tile.dataset.key - e.target.parentNode.dataset.key > 6 &&
-          tile.dataset.key - e.target.parentNode.dataset.key < 10 &&
-          tile.classList.contains("board__tile--black")
-      );
+      const filteredTiles = boardTiles.filter((tile) => {
+        const possibleTiles = [
+          boardTiles[parseInt(e.target.parentNode.dataset.key) + 7].dataset.key,
+          boardTiles[parseInt(e.target.parentNode.dataset.key) + 9].dataset.key,
+        ];
+
+        return (
+          (tile.dataset.key == possibleTiles[0] &&
+            tile.children.length === 0 &&
+            tile.classList.contains("board__tile--black")) ||
+          (tile.dataset.key == possibleTiles[1] &&
+            tile.children.length === 0 &&
+            tile.classList.contains("board__tile--black"))
+        );
+      });
 
       //   check if available square are free
       BoardManage.addAvailableTiles(filteredTiles);
