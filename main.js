@@ -67,45 +67,25 @@ const showPossibleMoves = (e) => {
   BoardManage.clearAvailableTiles();
   PiecesManage.clearActivePawn();
 
-  // white's move
-  if (e.target.classList.contains("pawn--white") && Move.getTurn()) {
+  const color = e.target.classList.contains("pawn--white") ? "white" : "black";
+
+  const possibleTiles = [
+    boardTiles[
+      parseInt(e.target.parentNode.dataset.key) - (color === "white" ? 7 : -7)
+    ].dataset.key,
+    boardTiles[
+      parseInt(e.target.parentNode.dataset.key) - (color === "white" ? 9 : -9)
+    ].dataset.key,
+  ];
+
+  if (
+    (color === "white" && Move.getTurn()) ||
+    (color === "black" && !Move.getTurn())
+  ) {
     //   check if capture is available
-    if (Object.keys(checkIfCapture("white")).length > 0) {
-      const data = checkIfCapture("white");
-      const keys = Object.keys(data);
-
-      if (!keys.includes(e.target.parentNode.dataset.key)) {
-        return;
-      } else {
-        e.target.classList.add("pawn--active");
-        const currentPawn = document.querySelector(".pawn--active").parentNode
-          .dataset.key;
-
-        Move.setCapture();
-        BoardManage.addAvailableTiles(data[currentPawn]);
-        return;
-      }
-    } else {
-      //   if no capture available
-      const filteredTiles = boardTiles.filter(
-        (tile) =>
-          tile.dataset.key < e.target.parentNode.dataset.key &&
-          e.target.parentNode.dataset.key - tile.dataset.key > 6 &&
-          e.target.parentNode.dataset.key - tile.dataset.key < 10 &&
-          tile.classList.contains("board__tile--black")
-      );
-
-      //   check if available square are free
-      BoardManage.addAvailableTiles(filteredTiles);
+    if (Object.keys(checkIfCapture(color)).length > 0) {
       e.target.classList.add("pawn--active");
-    }
-
-    // black's move
-  } else if (e.target.classList.contains("pawn--black") && !Move.getTurn()) {
-    //   check if capture is available
-    if (Object.keys(checkIfCapture("black")).length > 0) {
-      e.target.classList.add("pawn--active");
-      const data = checkIfCapture("black");
+      const data = checkIfCapture(color);
 
       const currentPawn = document.querySelector(".pawn--active").parentNode
         .dataset.key;
@@ -116,11 +96,6 @@ const showPossibleMoves = (e) => {
     } else {
       //   if no capture available
       const filteredTiles = boardTiles.filter((tile) => {
-        const possibleTiles = [
-          boardTiles[parseInt(e.target.parentNode.dataset.key) + 7].dataset.key,
-          boardTiles[parseInt(e.target.parentNode.dataset.key) + 9].dataset.key,
-        ];
-
         return (
           (tile.dataset.key == possibleTiles[0] &&
             tile.children.length === 0 &&
