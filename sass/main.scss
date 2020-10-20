@@ -86,3 +86,29 @@ body {
     box-shadow: 0 0 6px 0 white;
   }
 }
+
+.king {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+
+  &--black {
+    &::after {
+      background-color: lighten($blackPieces, 15%);
+    }
+  }
+
+  &--white {
+    &::after {
+      background-color: darken($whitePieces, 15%);
+    }
+  }
+}

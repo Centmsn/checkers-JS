@@ -1,11 +1,16 @@
 class MoveManage {
   constructor() {
     this._capture = false;
+    // white's move if true
     this._move = true;
   }
 
   setCapture = () => {
-    this.capture = !this.capture;
+    this.capture = true;
+  };
+
+  removeCapture = () => {
+    this.capture = false;
   };
 
   getTurn = () => {
@@ -28,13 +33,28 @@ class MoveManage {
         document.querySelector(".board__tile--available").dataset.key,
         color
       );
+
+      Pieces.generatePawns(color, 1, e.target);
+      currentTile.parentNode.innerHTML = "";
+
+      BoardManage.clearAvailableTiles();
+
+      if (Object.keys(checkIfCapture(color)).length > 0) {
+        checkIfCapture(color);
+        this.setCapture();
+      } else {
+        Move.setTurn();
+      }
+    } else {
+      Pieces.generatePawns(color, 1, e.target);
+      currentTile.parentNode.innerHTML = "";
+
+      BoardManage.clearAvailableTiles();
+      Move.setTurn();
     }
 
-    PiecesManage.generatePawns(color, 1, e.target);
-    currentTile.parentNode.innerHTML = "";
-
-    BoardManage.clearAvailableTiles();
-    Move.setTurn();
+    // check if pawn should be promoted to king
+    Pieces.checkIfKing();
   };
 
   capturePawn = (current, available, color) => {
@@ -45,10 +65,9 @@ class MoveManage {
     } else {
       capturedPawn = parseInt(available) - (available - current) / 2;
     }
-
     console.log(capturedPawn);
     boardTiles[capturedPawn].innerHTML = "";
 
-    this.setCapture();
+    this.removeCapture();
   };
 }

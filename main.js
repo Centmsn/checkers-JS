@@ -1,7 +1,6 @@
 const boardTiles = [...document.querySelectorAll(".board__tile")];
 
 checkIfCapture = (color) => {
-  // all white pawns
   const pawns = [...document.querySelectorAll(`.pawn--${color}`)];
   // object with pawns that can capture
   const availablePawns = {};
@@ -16,8 +15,20 @@ checkIfCapture = (color) => {
     const leftTile = boardTiles[takenTiles[i] - amountLeft];
     const rightTile = boardTiles[takenTiles[i] - amountRight];
 
-    // check left tile behind the black pawn
+    if (typeof leftTile !== "object" || typeof rightTile !== "object") {
+      continue;
+    }
+
+    if (
+      boardTiles[leftTile.dataset.key - amountLeft] === undefined ||
+      boardTiles[leftTile.dataset.key - amountLeft] === undefined ||
+      boardTiles[rightTile.dataset.key - amountRight] === undefined ||
+      boardTiles[rightTile.dataset.key - amountRight] === undefined
+    ) {
+      continue;
+    }
     if (leftTile.firstChild) {
+      // leftTile && rightTile may exceed numbers of tiles (0-63) if they are on the top or on the bottom of the board
       if (
         leftTile.firstChild.classList.contains(`pawn--${oppositeColor}`) &&
         leftTile.classList.contains(`board__tile--black`)
@@ -65,7 +76,7 @@ checkIfCapture = (color) => {
 // logic for possible moves
 const showPossibleMoves = (e) => {
   BoardManage.clearAvailableTiles();
-  PiecesManage.clearActivePawn();
+  Pieces.clearActivePawn();
 
   const color = e.target.classList.contains("pawn--white") ? "white" : "black";
 
@@ -115,7 +126,7 @@ const showPossibleMoves = (e) => {
 
 const mainGameFunc = () => {
   // reset board
-  PiecesManage.resetPieces();
+  Pieces.resetPieces();
   BoardManage.clearAvailableTiles();
 
   // whites moves if set to true
@@ -130,3 +141,4 @@ const startBtn = document.querySelector(".game-stats__button");
 startBtn.addEventListener("click", mainGameFunc);
 
 const Move = new MoveManage();
+const Pieces = new PiecesManage();
