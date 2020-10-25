@@ -20,15 +20,14 @@ checkIfCapture = (color) => {
     }
 
     if (
-      boardTiles[leftTile.dataset.key - amountLeft] === undefined ||
-      boardTiles[leftTile.dataset.key - amountLeft] === undefined ||
-      boardTiles[rightTile.dataset.key - amountRight] === undefined ||
-      boardTiles[rightTile.dataset.key - amountRight] === undefined
+      !boardTiles[leftTile.dataset.key - amountLeft] ||
+      !boardTiles[leftTile.dataset.key - amountLeft] ||
+      !boardTiles[rightTile.dataset.key - amountRight] ||
+      !boardTiles[rightTile.dataset.key - amountRight]
     ) {
       continue;
     }
     if (leftTile.firstChild) {
-      // leftTile && rightTile may exceed numbers of tiles (0-63) if they are on the top or on the bottom of the board
       if (
         leftTile.firstChild.classList.contains(`pawn--${oppositeColor}`) &&
         leftTile.classList.contains(`board__tile--black`)
@@ -128,6 +127,8 @@ const mainGameFunc = () => {
   // reset board
   Pieces.resetPieces();
   BoardManage.clearAvailableTiles();
+  BoardManage.updateGameInfo("black");
+  BoardManage.updateGameInfo("white");
 
   // whites moves if set to true
   Move.setTurn();

@@ -24,4 +24,21 @@ class BoardManage {
         : null
     );
   };
+
+  static checkIfWin = () => {
+    const { white, black } = Pieces.getPieces();
+
+    if (white.pawn === 0 && white.king === 0) {
+      console.log("koniec");
+    } else if (black.king === 0 && black.pawn === 0) {
+      console.log("koniec");
+    }
+  };
+
+  static updateGameInfo = (color) => {
+    const stats = document.querySelector(`.game-stats__${color}`);
+    const pieces = Pieces.getPieces(color);
+
+    stats.textContent = `Pawns: ${pieces.pawn} Kings: ${pieces.king}`;
+  };
 }

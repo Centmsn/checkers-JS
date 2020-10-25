@@ -8,6 +8,46 @@ class PiecesManage {
     this._whiteKings = 0;
     this._blackKings = 0;
   }
+
+  getPieces = (color = "all") => {
+    const white = { king: this._whiteKings, pawn: this._whitePawns };
+    const black = { king: this._blackKings, pawn: this._blackPawns };
+
+    switch (color) {
+      case "white":
+        return white;
+      case "black":
+        return black;
+      case "all":
+        return {
+          white,
+          black,
+        };
+    }
+  };
+
+  removePiece = (color, type) => {
+    if (color === "black") {
+      type === "pawn" ? this._blackPawns-- : this._blackKings--;
+    } else {
+      type === "pawn" ? this._whitePawns-- : this._whiteKings--;
+    }
+  };
+
+  addKing = (color) => {
+    switch (color) {
+      case "black":
+        this._blackKings++;
+        break;
+
+      case "white":
+        this._whiteKings++;
+        break;
+
+      default:
+        throw new Error("Incorrect type of argument. Use 'white' or 'black'");
+    }
+  };
   // reset pieces to starting position
   resetPieces = () => {
     this._whitePawns = 12;
@@ -66,11 +106,17 @@ class PiecesManage {
         tile.firstChild?.classList.contains("pawn--black") &&
         tile.dataset.key >= 56
       ) {
+        if (!tile.firstChild.classList.contains("king")) {
+          Pieces.addKing("black");
+        }
         tile.firstChild.classList.add("king", "king--black");
       } else if (
         tile.firstChild?.classList.contains("pawn--white") &&
         tile.dataset.key <= 7
       ) {
+        if (!tile.firstChild.classList.contains("king")) {
+          Pieces.addKing("white");
+        }
         tile.firstChild?.classList.add("king", "king--white");
       }
     });

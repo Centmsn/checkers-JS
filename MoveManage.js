@@ -19,6 +19,11 @@ class MoveManage {
 
   setTurn = () => {
     this.move = !this.move;
+    BoardManage.checkIfWin();
+
+    const info = document.querySelector(".game-stats__turn");
+
+    info.textContent = this.move ? "White's turn" : "Black's turn";
   };
 
   movePawn = (e) => {
@@ -55,6 +60,7 @@ class MoveManage {
 
     // check if pawn should be promoted to king
     Pieces.checkIfKing();
+    BoardManage.updateGameInfo(color);
   };
 
   capturePawn = (current, available, color) => {
@@ -65,9 +71,9 @@ class MoveManage {
     } else {
       capturedPawn = parseInt(available) - (available - current) / 2;
     }
-    console.log(capturedPawn);
     boardTiles[capturedPawn].innerHTML = "";
 
     this.removeCapture();
+    Pieces.removePiece(color, "pawn");
   };
 }

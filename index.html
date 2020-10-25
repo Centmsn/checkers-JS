@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css">
     <title>Document</title>
 </head>
 <body>
+    <div class="game-container">
 <div class="game-stats">
-    <div class="game-stats__turn"><p class="game-stats__text"></p></div>
-    <div class="game-stats__clock"></div>
-    <button class="game-stats__button">Start game</button>
+    <div class="game-stats__clock">09:45</div>
+    <div class="game-stats__black"></div>
+    <div class="game-stats__turn"></div>
+    <div class="game-stats__white"></div>
+    <div class="game-stats__start">    <button class="game-stats__button">New game</button></div>
+
 </div>
         <div class="board">
             <div class="board__tile board__tile--white" data-key=0></div>
@@ -85,6 +90,8 @@
             <div class="board__tile board__tile--black" data-key=62></div>
             <div class="board__tile board__tile--white" data-key=63></div>
         </div>
+
+    </div>
 
         <script src="./MoveManage.js"></script>
         <script src="./PiecesManage.js"></script>
