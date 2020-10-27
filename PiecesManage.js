@@ -26,6 +26,7 @@ class PiecesManage {
     }
   };
 
+  // removes incorrect color of pawn
   removePiece = (color, type) => {
     if (color === "black") {
       type === "pawn" ? this._blackPawns-- : this._blackKings--;
@@ -75,7 +76,7 @@ class PiecesManage {
     for (let i = 0; i < amount; i++) {
       const pawn = document.createElement("div");
       pawn.classList.add("pawn", `pawn--${color}`);
-      pawn.addEventListener("click", showPossibleMoves);
+      pawn.addEventListener("click", Move.showPossibleMoves);
 
       if (tile) {
         // generate 1 pawn and append
@@ -100,6 +101,7 @@ class PiecesManage {
     }
   };
 
+  // add king and remove pawn
   checkIfKing = () => {
     boardTiles.forEach((tile) => {
       if (
@@ -107,17 +109,21 @@ class PiecesManage {
         tile.dataset.key >= 56
       ) {
         if (!tile.firstChild.classList.contains("king")) {
-          Pieces.addKing("black");
+          this.addKing("black");
+          this.removePiece("black", "pawn");
+          tile.firstChild.classList.add("king", "king--black");
+          tile.firstChild.classList.remove("pawn", "pawn--black");
         }
-        tile.firstChild.classList.add("king", "king--black");
       } else if (
         tile.firstChild?.classList.contains("pawn--white") &&
         tile.dataset.key <= 7
       ) {
         if (!tile.firstChild.classList.contains("king")) {
-          Pieces.addKing("white");
+          this.addKing("white");
+          this.removePiece("white", "pawn");
+          tile.firstChild.classList.add("king", "king--white");
+          tile.firstChild.classList.remove("pawn", "pawn--white");
         }
-        tile.firstChild?.classList.add("king", "king--white");
       }
     });
   };

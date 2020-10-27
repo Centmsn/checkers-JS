@@ -10,7 +10,7 @@ class BoardManage {
 
   static addAvailableTiles = (tiles) => {
     if (typeof tiles !== "object") {
-      throw new Error("Incorrent argument type");
+      return;
     }
 
     tiles.forEach((tile) =>
@@ -37,8 +37,11 @@ class BoardManage {
 
   static updateGameInfo = (color) => {
     const stats = document.querySelector(`.game-stats__${color}`);
-    const pieces = Pieces.getPieces(color);
+    const { pawn, king } = Pieces.getPieces(color);
 
-    stats.textContent = `Pawns: ${pieces.pawn} Kings: ${pieces.king}`;
+    const pawnCount = pawn > 0 ? `<p>Pawns: ${pawn}</p>` : "";
+    const kingCount = king > 0 ? `<p>Kings: ${king}</p>` : "";
+
+    stats.innerHTML = `${pawnCount}<br>${kingCount}`;
   };
 }

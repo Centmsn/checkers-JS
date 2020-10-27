@@ -5,6 +5,24 @@ $whitePieces: rgb(209, 209, 209);
 $border: rgb(128, 128, 128);
 $body: rgb(228, 228, 228);
 
+%piece {
+  flex-basis: 80%;
+  height: 80%;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 5px 0 rgb(56, 56, 56);
+}
+
+%piece--black {
+  background-color: $blackPieces;
+  border: 3px solid lighten($blackPieces, 25%);
+}
+
+%piece--white {
+  background-color: $whitePieces;
+  border: 3px solid darken($whitePieces, 25%);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -40,6 +58,7 @@ body {
   background-color: $blackTile;
   border-right: 10px solid $border;
   color: $whiteTile;
+  font-size: 1.25rem;
 
   display: flex;
   justify-content: center;
@@ -52,6 +71,17 @@ body {
   &__black,
   &__white {
     flex-basis: 100%;
+  }
+
+  &__button {
+    width: 70%;
+    height: 50px;
+    cursor: pointer;
+    background: none;
+    color: white;
+    outline: none;
+    font-size: 1.5rem;
+    align-self: flex-end;
   }
 }
 
@@ -92,20 +122,13 @@ body {
 }
 
 .pawn {
-  flex-basis: 80%;
-  height: 80%;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 0 5px 0 rgb(56, 56, 56);
-
+  @extend %piece;
   &--black {
-    background-color: $blackPieces;
-    border: 3px solid lighten($blackPieces, 25%);
+    @extend %piece--black;
   }
 
   &--white {
-    background-color: $whitePieces;
-    border: 3px solid darken($whitePieces, 25%);
+    @extend %piece--white;
   }
 
   &--active {
@@ -114,6 +137,7 @@ body {
 }
 
 .king {
+  @extend %piece;
   position: relative;
   &::after {
     content: "";
@@ -127,12 +151,14 @@ body {
   }
 
   &--black {
+    @extend %piece--black;
     &::after {
       background-color: lighten($blackPieces, 15%);
     }
   }
 
   &--white {
+    @extend %piece--white;
     &::after {
       background-color: darken($whitePieces, 15%);
     }
