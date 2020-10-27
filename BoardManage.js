@@ -4,7 +4,7 @@ class BoardManage {
       tile.classList.remove("board__tile--available")
     );
     boardTiles.forEach((tile) =>
-      tile.removeEventListener("click", Move.movePawn)
+      tile.removeEventListener("click", Move.movePiece)
     );
   };
 
@@ -13,16 +13,16 @@ class BoardManage {
       return;
     }
 
-    tiles.forEach((tile) =>
-      tile.children.length === 0
-        ? tile.classList.add("board__tile--available")
-        : null
-    );
-    tiles.forEach((tile) =>
-      tile.children.length === 0
-        ? tile.addEventListener("click", Move.movePawn)
-        : null
-    );
+    const validatedTiles = tiles.filter((tile) => tile !== undefined);
+
+    console.log(validatedTiles);
+
+    validatedTiles.forEach((tile) => {
+      if (tile.children.length === 0) {
+        tile.classList.add("board__tile--available");
+        tile.addEventListener("click", Move.movePiece);
+      }
+    });
   };
 
   static checkIfWin = () => {

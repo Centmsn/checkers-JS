@@ -26,9 +26,11 @@ class MoveManage {
     info.textContent = this.move ? "White's turn" : "Black's turn";
   };
 
-  movePawn = (e) => {
-    const currentTile = document.querySelector(".pawn--active");
-    const color = currentTile.classList.contains("pawn--black")
+  movePiece = (e) => {
+    const type = document.querySelector(".king--active") ? "king" : "pawn";
+
+    const currentTile = document.querySelector(`.${type}--active`);
+    const color = currentTile.classList.contains(`${type}--black`)
       ? "black"
       : "white";
 
@@ -39,7 +41,7 @@ class MoveManage {
         color
       );
 
-      Pieces.generatePawns(color, 1, e.target);
+      Pieces.generatePiece(color, 1, e.target, type);
       currentTile.parentNode.innerHTML = "";
 
       BoardManage.clearAvailableTiles();
@@ -51,7 +53,7 @@ class MoveManage {
         Move.setTurn();
       }
     } else {
-      Pieces.generatePawns(color, 1, e.target);
+      Pieces.generatePiece(color, 1, e.target, type);
       currentTile.parentNode.innerHTML = "";
 
       BoardManage.clearAvailableTiles();
@@ -79,9 +81,10 @@ class MoveManage {
     this.removeCapture();
   };
 
+  // possibleMoves for pawns
   showPossibleMoves = (e) => {
     BoardManage.clearAvailableTiles();
-    Pieces.clearActivePawn();
+    Pieces.clearActivePiece();
 
     const color = e.target.classList.contains("pawn--white")
       ? "white"
@@ -202,5 +205,35 @@ class MoveManage {
       }
     }
     return availablePawns;
+  };
+  // function to move the king
+  // in developement
+  showKingMoves = (e) => {
+    BoardManage.clearAvailableTiles();
+    Pieces.clearActivePiece();
+    const color = e.target.classList.contains("king--white")
+      ? "white"
+      : "black";
+
+    const possibleMoves = [
+      boardTiles[parseInt(e.target.parentNode.dataset.key) - 7],
+      boardTiles[parseInt(e.target.parentNode.dataset.key) + 7],
+      boardTiles[parseInt(e.target.parentNode.dataset.key) - 9],
+      boardTiles[parseInt(e.target.parentNode.dataset.key) + 9],
+    ];
+
+    console.log(possibleMoves);
+
+    if (
+      (color === "white" && this.getTurn()) ||
+      (color === "black" && !this.getTurn())
+    ) {
+      if (Object.keys(this.checkIfCapture(color)).length > 0) {
+        return;
+      } else {
+        BoardManage.addAvailableTiles(possibleMoves);
+        e.target.classList.add("king--active");
+      }
+    }
   };
 }

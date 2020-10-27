@@ -61,29 +61,36 @@ class PiecesManage {
       BoardManage.clearAvailableTiles();
     });
     // generate starting pawns
-    this.generatePawns("black", 12);
-    this.generatePawns("white", 12);
+    this.generatePiece("black", 12);
+    this.generatePiece("white", 12);
   };
 
-  clearActivePawn = () => {
+  clearActivePiece = () => {
     document
-      .querySelectorAll(".pawn--black, .pawn--white")
-      .forEach((pawn) => pawn.classList.remove("pawn--active"));
+      .querySelectorAll(".pawn--black, .pawn--white, .king")
+      .forEach((piece) =>
+        piece.classList.remove("pawn--active", "king--active")
+      );
   };
 
   // generate pawns and append them to DOM
-  generatePawns = (color, amount, tile) => {
+  generatePiece = (color, amount, tile, type = "pawn") => {
     for (let i = 0; i < amount; i++) {
-      const pawn = document.createElement("div");
-      pawn.classList.add("pawn", `pawn--${color}`);
-      pawn.addEventListener("click", Move.showPossibleMoves);
+      const piece = document.createElement("div");
+      piece.classList.add(`${type}`, `${type}--${color}`);
+
+      if (type === "pawn") {
+        piece.addEventListener("click", Move.showPossibleMoves);
+      } else {
+        piece.addEventListener("click", Move.showKingMoves);
+      }
 
       if (tile) {
         // generate 1 pawn and append
-        tile.appendChild(pawn);
+        tile.appendChild(piece);
       } else {
         // default - reset game
-        this.getStartingPosition(color)[i].appendChild(pawn);
+        this.getStartingPosition(color)[i].appendChild(piece);
       }
     }
   };
@@ -113,6 +120,8 @@ class PiecesManage {
           this.removePiece("black", "pawn");
           tile.firstChild.classList.add("king", "king--black");
           tile.firstChild.classList.remove("pawn", "pawn--black");
+          tile.firstChild.removeEventListener("click", Move.showPossibleMoves);
+          tile.firstChild.addEventListener("click", Move.showKingMoves);
         }
       } else if (
         tile.firstChild?.classList.contains("pawn--white") &&
@@ -123,6 +132,8 @@ class PiecesManage {
           this.removePiece("white", "pawn");
           tile.firstChild.classList.add("king", "king--white");
           tile.firstChild.classList.remove("pawn", "pawn--white");
+          tile.firstChild.removeEventListener("click", Move.showPossibleMoves);
+          tile.firstChild.addEventListener("click", Move.showKingMoves);
         }
       }
     });

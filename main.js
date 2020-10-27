@@ -11,6 +11,10 @@ const mainGameFunc = () => {
   // whites moves if set to true
   Move.setTurn();
 
+  // add king for test
+  addKing(42);
+  // REMOVE BEFORE PLAYING
+
   // start the clock
   const clock = document.querySelector(".game-stats__clock");
 
@@ -40,3 +44,21 @@ startBtn.addEventListener("click", mainGameFunc);
 
 const Move = new MoveManage();
 const Pieces = new PiecesManage();
+
+// cheat function to add king
+// just for testing puroposes
+
+const addKing = (num) => {
+  const pawnToPromote = document.querySelectorAll(".board__tile")[num]
+    .firstChild;
+
+  const color = pawnToPromote.classList.contains("pawn--black")
+    ? "black"
+    : "white";
+
+  pawnToPromote.classList.remove("pawn", `pawn--${color}`);
+  pawnToPromote.classList.add("king", `king--${color}`);
+
+  pawnToPromote.removeEventListener("click", Move.showPossibleMoves);
+  pawnToPromote.addEventListener("click", Move.showKingMoves);
+};
