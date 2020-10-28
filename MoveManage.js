@@ -35,7 +35,7 @@ class MoveManage {
       : "white";
 
     if (this.capture) {
-      this.capturePiece(currentTile.parentNode.dataset.key, e.target);
+      this.capturePiece(e.target);
 
       Pieces.generatePiece(color, 1, e.target, type);
       currentTile.parentNode.innerHTML = "";
@@ -62,7 +62,7 @@ class MoveManage {
     BoardManage.updateGameInfo("white");
   };
 
-  capturePiece = (current, target) => {
+  capturePiece = (target) => {
     const possibleMoves = Pieces.getPossibleCapture();
     const targetKey = parseInt(target.dataset.key);
 
@@ -80,6 +80,7 @@ class MoveManage {
   };
 
   // possibleMoves for pawns
+  // ! refactor required - merge pawn and king capture check
   showPossibleMoves = (e) => {
     BoardManage.clearAvailableTiles();
     Pieces.clearActivePiece();
@@ -157,7 +158,7 @@ class MoveManage {
 
     // object with pawns that can capture
     const availablePawns = {};
-    const pawnsToCapture = {};
+    const pawnsToCapture = [];
 
     const amountLeft = color === "white" ? 9 : -9;
     const amountRight = color === "white" ? 7 : -7;
@@ -196,7 +197,7 @@ class MoveManage {
             )
           ) {
           } else {
-            pawnsToCapture[pieces[i].parentNode.dataset.key] = [leftTile];
+            pawnsToCapture.push(leftTile);
             // add pawns to object
             availablePawns[pieces[i].parentNode.dataset.key] = [
               boardTiles[leftTile.dataset.key - amountLeft],
@@ -221,7 +222,7 @@ class MoveManage {
             )
           ) {
           } else {
-            pawnsToCapture[pieces[i].parentNode.dataset.key] = [rightTile];
+            pawnsToCapture.push(rightTile);
             // add pawns to object
             availablePawns[pieces[i].parentNode.dataset.key] = [
               boardTiles[rightTile.dataset.key - amountRight],
@@ -231,12 +232,12 @@ class MoveManage {
       }
     }
 
-    console.log(availablePawns);
     Pieces.setPossibleCapture(pawnsToCapture);
     return availablePawns;
   };
   // function to move the king
   // in developement
+  // ! refactor required - merge pawn and king moves
   showKingMoves = (e) => {
     BoardManage.clearAvailableTiles();
     Pieces.clearActivePiece();
@@ -274,6 +275,7 @@ class MoveManage {
     }
   };
 
+  // ! refactor required - merge pawn and king capture check
   checkIfKingCapture = (color) => {
     const oppositeColor = color === "black" ? "white" : "black";
     const currentSquare = parseInt(

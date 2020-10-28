@@ -12,13 +12,13 @@ const mainGameFunc = () => {
   Move.setTurn();
 
   // add king for test
-  boardTiles.forEach((tile) => (tile.innerHTML = ""));
-  Pieces.generatePiece("white", 1, boardTiles[35]);
-  Pieces.generatePiece("black", 1, boardTiles[17]);
-  Pieces.generatePiece("black", 1, boardTiles[53]);
-  Pieces.generatePiece("black", 1, boardTiles[49]);
-  Pieces.generatePiece("black", 1, boardTiles[21]);
-  addKing(35);
+  // boardTiles.forEach((tile) => (tile.innerHTML = ""));
+  // Pieces.generatePiece("white", 1, boardTiles[35]);
+  // Pieces.generatePiece("black", 1, boardTiles[17]);
+  // Pieces.generatePiece("black", 1, boardTiles[53]);
+  // Pieces.generatePiece("black", 1, boardTiles[49]);
+  // Pieces.generatePiece("black", 1, boardTiles[21]);
+  // addKing(35);
   // REMOVE BEFORE PLAYING
 
   // start the clock
