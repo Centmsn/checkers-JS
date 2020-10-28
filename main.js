@@ -2,12 +2,16 @@ const boardTiles = [...document.querySelectorAll(".board__tile")];
 let clockId = null;
 
 const mainGameFunc = () => {
+  const modal = document.querySelector(".modal");
   // reset board
   Pieces.resetPieces();
   BoardManage.clearAvailableTiles();
   BoardManage.updateGameInfo("black");
   BoardManage.updateGameInfo("white");
 
+  if (modal) {
+    document.querySelector(".board").removeChild(modal);
+  }
   // whites moves if set to true
   Move.setTurn();
 

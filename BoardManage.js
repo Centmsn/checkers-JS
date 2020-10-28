@@ -31,9 +31,9 @@ class BoardManage {
     const { white, black } = Pieces.getPieces();
 
     if (white.pawn === 0 && white.king === 0) {
-      console.log("koniec");
+      this.endGame("black");
     } else if (black.king === 0 && black.pawn === 0) {
-      console.log("koniec");
+      this.endGame("white");
     }
   };
 
@@ -45,5 +45,21 @@ class BoardManage {
     const kingCount = king > 0 ? `<p>Kings: ${king}</p>` : "";
 
     stats.innerHTML = `${pawnCount}<br>${kingCount}`;
+  };
+
+  static endGame = (color) => {
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+
+    const info = document.createElement("p");
+
+    if (color === "white") {
+      info.textContent = "White is victorious!";
+    } else {
+      info.textContent = "Black is victorious!";
+    }
+
+    modal.appendChild(info);
+    document.querySelector(".board").appendChild(modal);
   };
 }
