@@ -27,6 +27,12 @@ $body: rgb(228, 228, 228);
   box-shadow: 0 0 6px 0 white;
 }
 
+// shows available piece
+// in development
+%piece--available {
+  animation: flash 0.5s 0s 4 alternate;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -138,6 +144,10 @@ body {
   &--active {
     @extend %piece--active;
   }
+
+  &--available {
+    @extend %piece--available;
+  }
 }
 
 .king {
@@ -170,5 +180,15 @@ body {
 
   &--active {
     @extend %piece--active;
+  }
+
+  &--available {
+    @extend %piece--available;
+  }
+}
+
+@keyframes flash {
+  100% {
+    box-shadow: 0 0 6px white;
   }
 }

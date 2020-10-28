@@ -66,16 +66,34 @@ class MoveManage {
     const possibleMoves = Pieces.getPossibleCapture();
     const targetKey = parseInt(target.dataset.key);
 
-    if (possibleMoves.includes(boardTiles[targetKey - 7])) {
-      boardTiles[targetKey - 7].innerHTML = "";
-    } else if (possibleMoves.includes(boardTiles[targetKey - 9])) {
-      boardTiles[targetKey - 9].innerHTML = "";
-    } else if (possibleMoves.includes(boardTiles[parseInt(targetKey) + 7])) {
-      boardTiles[targetKey + 7].innerHTML = "";
-    } else if (possibleMoves.includes(boardTiles[parseInt(targetKey) + 9])) {
-      boardTiles[targetKey + 9].innerHTML = "";
+    const squares = [
+      boardTiles[targetKey - 7],
+      boardTiles[targetKey - 9],
+      boardTiles[targetKey + 7],
+      boardTiles[targetKey + 9],
+    ];
+
+    let index = null;
+
+    if (possibleMoves.includes(squares[0])) {
+      index = 0;
+    } else if (possibleMoves.includes(squares[1])) {
+      index = 1;
+    } else if (possibleMoves.includes(squares[2])) {
+      index = 2;
+    } else if (possibleMoves.includes(squares[3])) {
+      index = 3;
     }
 
+    const type = squares[index].firstChild.classList.contains("pawn")
+      ? "pawn"
+      : "king";
+    const color = squares[index].firstChild.classList.contains(`${type}--black`)
+      ? "black"
+      : "white";
+
+    squares[index].innerHTML = "";
+    Pieces.removePiece(color, type);
     this.removeCapture();
   };
 
@@ -264,7 +282,6 @@ class MoveManage {
         const currentPiece = document.querySelector(".king--active").parentNode
           .dataset.key;
 
-        console.log(data);
         this.setCapture();
         BoardManage.addAvailableTiles(data[currentPiece]);
         return;

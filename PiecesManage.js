@@ -8,7 +8,7 @@ class PiecesManage {
     this._whiteKings = 0;
     this._blackKings = 0;
 
-    // available to capture
+    // pieces which can be captured
     this._possibleCaptures = {};
   }
 
@@ -40,7 +40,7 @@ class PiecesManage {
     }
   };
 
-  // removes incorrect color of pawn
+  // remove piece from stats
   removePiece = (color, type) => {
     if (color === "black") {
       type === "pawn" ? this._blackPawns-- : this._blackKings--;
@@ -49,6 +49,7 @@ class PiecesManage {
     }
   };
 
+  // add king to king count
   addKing = (color) => {
     switch (color) {
       case "black":
@@ -63,6 +64,7 @@ class PiecesManage {
         throw new Error("Incorrect type of argument. Use 'white' or 'black'");
     }
   };
+
   // reset pieces to starting position
   resetPieces = () => {
     this._whitePawns = 12;
@@ -79,6 +81,7 @@ class PiecesManage {
     this.generatePiece("white", 12);
   };
 
+  // removes active class from all pieces
   clearActivePiece = () => {
     document
       .querySelectorAll(".pawn--black, .pawn--white, .king")
@@ -88,6 +91,7 @@ class PiecesManage {
   };
 
   // generate piece and append them to DOM
+  // if no tile is passed - reset game
   generatePiece = (color, amount, tile, type = "pawn") => {
     for (let i = 0; i < amount; i++) {
       const piece = document.createElement("div");
@@ -122,7 +126,7 @@ class PiecesManage {
     }
   };
 
-  // add king and remove pawn
+  // promotes pawn to king and manages classes
   checkIfKing = () => {
     boardTiles.forEach((tile) => {
       if (
@@ -130,24 +134,20 @@ class PiecesManage {
         tile.dataset.key >= 56
       ) {
         if (!tile.firstChild.classList.contains("king")) {
+          tile.innerHTML = "";
           this.addKing("black");
           this.removePiece("black", "pawn");
-          tile.firstChild.classList.add("king", "king--black");
-          tile.firstChild.classList.remove("pawn", "pawn--black");
-          tile.firstChild.removeEventListener("click", Move.showPossibleMoves);
-          tile.firstChild.addEventListener("click", Move.showKingMoves);
+          this.generatePiece("black", 1, tile, "king");
         }
       } else if (
         tile.firstChild?.classList.contains("pawn--white") &&
         tile.dataset.key <= 7
       ) {
         if (!tile.firstChild.classList.contains("king")) {
+          tile.innerHTML = "";
           this.addKing("white");
           this.removePiece("white", "pawn");
-          tile.firstChild.classList.add("king", "king--white");
-          tile.firstChild.classList.remove("pawn", "pawn--white");
-          tile.firstChild.removeEventListener("click", Move.showPossibleMoves);
-          tile.firstChild.addEventListener("click", Move.showKingMoves);
+          this.generatePiece("white", 1, tile, "king");
         }
       }
     });

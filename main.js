@@ -68,3 +68,13 @@ const addKing = (num) => {
   pawnToPromote.removeEventListener("click", Move.showPossibleMoves);
   pawnToPromote.addEventListener("click", Move.showKingMoves);
 };
+
+// development function to add available class
+const addFlash = (num) => {
+  const piece = document.querySelectorAll(".board__tile")[num].firstChild;
+
+  const type = piece.classList.contains("pawn") ? "pawn" : "king";
+
+  piece.classList.remove(`${type}--available`);
+  piece.classList.add(`${type}--available`);
+};
