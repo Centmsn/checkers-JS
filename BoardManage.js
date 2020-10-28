@@ -13,9 +13,11 @@ class BoardManage {
       return;
     }
 
-    const validatedTiles = tiles.filter((tile) => tile !== undefined);
-
-    console.log(validatedTiles);
+    // validate if tile is not undefined and black
+    const validatedTiles = tiles.filter(
+      (tile) =>
+        tile !== undefined && tile.classList.contains("board__tile--black")
+    );
 
     validatedTiles.forEach((tile) => {
       if (tile.children.length === 0) {

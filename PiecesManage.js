@@ -7,7 +7,21 @@ class PiecesManage {
     // number of kings on the board
     this._whiteKings = 0;
     this._blackKings = 0;
+
+    // available to capture
+    this._possibleCaptures = {};
   }
+
+  setPossibleCapture = (object) => {
+    if (typeof object !== "object") {
+      throw new Error("Incorrect argument - object required");
+    }
+    this._possibleCaptures = object;
+  };
+
+  getPossibleCapture = () => {
+    return this._possibleCaptures;
+  };
 
   getPieces = (color = "all") => {
     const white = { king: this._whiteKings, pawn: this._whitePawns };
@@ -73,7 +87,7 @@ class PiecesManage {
       );
   };
 
-  // generate pawns and append them to DOM
+  // generate piece and append them to DOM
   generatePiece = (color, amount, tile, type = "pawn") => {
     for (let i = 0; i < amount; i++) {
       const piece = document.createElement("div");
