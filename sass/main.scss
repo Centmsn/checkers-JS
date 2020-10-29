@@ -31,9 +31,6 @@ $body: rgb(228, 228, 228);
 
 // shows available piece
 // in development
-%piece--available {
-  animation: flash 0.5s 0s 4 alternate;
-}
 
 * {
   margin: 0;
@@ -185,10 +182,6 @@ body {
   &--active {
     @extend %piece--active;
   }
-
-  &--available {
-    @extend %piece--available;
-  }
 }
 
 .king {
@@ -222,10 +215,10 @@ body {
   &--active {
     @extend %piece--active;
   }
+}
 
-  &--available {
-    @extend %piece--available;
-  }
+.available {
+  animation: flash 0.25s 0s 4 alternate;
 }
 
 @keyframes flash {

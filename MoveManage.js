@@ -21,6 +21,31 @@ class MoveManage {
     this.move = !this.move;
     BoardManage.checkIfWin();
 
+    const whitePieces = document.querySelectorAll(
+      ".pawn--white",
+      ".king--white"
+    );
+    const blackPieces = document.querySelectorAll(
+      ".pawn--black",
+      "king--black"
+    );
+
+    if (this.move) {
+      blackPieces.forEach((piece) =>
+        piece.removeEventListener("click", Move.showPossibleMoves)
+      );
+      whitePieces.forEach((piece) =>
+        piece.addEventListener("click", Move.showPossibleMoves)
+      );
+    } else {
+      whitePieces.forEach((piece) =>
+        piece.removeEventListener("click", Move.showPossibleMoves)
+      );
+      blackPieces.forEach((piece) =>
+        piece.addEventListener("click", Move.showPossibleMoves)
+      );
+    }
+
     const info = document.querySelector(".game-stats__turn");
 
     info.textContent = this.move ? "White's turn" : "Black's turn";
@@ -107,7 +132,6 @@ class MoveManage {
       : "black";
     let possibleMoves = [];
 
-    // TODO: prevent from adding class active if no move available
     e.target.classList.add(`${type}--active`);
 
     if (type === "king") {
@@ -136,6 +160,17 @@ class MoveManage {
 
         this.setCapture();
         BoardManage.addAvailableTiles(data[currentPiece]);
+        if (document.querySelectorAll(".board__tile--available").length === 0) {
+          e.target.classList.remove(`${type}--active`);
+
+          for (let piece in Pieces.getAvailablePiece()) {
+            boardTiles[piece].firstChild.classList.add("available");
+
+            setTimeout(() => {
+              boardTiles[piece].firstChild.classList.remove("available");
+            }, 1000);
+          }
+        }
         return;
       } else {
         BoardManage.addAvailableTiles(possibleMoves);
@@ -224,6 +259,7 @@ class MoveManage {
       }
     });
 
+    Pieces.setAvailablePiece(possibleMoves);
     Pieces.setPossibleCapture(possibleCaptures);
     return possibleMoves;
   };

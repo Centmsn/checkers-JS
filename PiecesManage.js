@@ -10,7 +10,17 @@ class PiecesManage {
 
     // pieces which can be captured
     this._possibleCaptures = [];
+    // piece which can capture
+    this._availablePiece = {};
   }
+
+  setAvailablePiece = (object) => {
+    this._availablePiece = object;
+  };
+
+  getAvailablePiece = () => {
+    return this._availablePiece;
+  };
 
   setPossibleCapture = (object) => {
     if (typeof object !== "object") {
