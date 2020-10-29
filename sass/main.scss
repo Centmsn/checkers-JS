@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap");
+
 $blackTile: rgb(17, 97, 17);
 $whiteTile: rgb(221, 219, 209);
 $blackPieces: rgb(41, 40, 37);
@@ -93,7 +95,6 @@ body {
   align-items: center;
   flex-wrap: wrap;
 
-  &__clock,
   &__turn,
   &__start,
   &__black,
@@ -101,15 +102,36 @@ body {
     flex-basis: 100%;
   }
 
+  &__start {
+    align-self: flex-end;
+    margin-bottom: 10%;
+  }
+
+  &__clock {
+    flex-basis: 75%;
+    font-family: "Cutive Mono", monospace;
+    font-size: 1.5rem;
+    background-color: lighten($blackTile, 5%);
+    border-radius: 5px;
+    padding: 5px;
+  }
+
   &__button {
     width: 70%;
     height: 50px;
     cursor: pointer;
-    background: none;
-    color: white;
+    background-color: lighten($blackTile, 5%);
+    color: $whiteTile;
     outline: none;
     font-size: 1.5rem;
     align-self: flex-end;
+
+    &:hover {
+    }
+  }
+
+  &__button--flash {
+    animation: btnFlash 0.3s 0s 4 alternate;
   }
 }
 
@@ -143,7 +165,7 @@ body {
       position: absolute;
       width: 20px;
       height: 20px;
-      background-color: rgb(156, 156, 156);
+      background-color: rgba(156, 156, 156, 0.75);
       border-radius: 50%;
     }
     cursor: pointer;
@@ -209,5 +231,11 @@ body {
 @keyframes flash {
   100% {
     box-shadow: 0 0 6px white;
+  }
+}
+
+@keyframes btnFlash {
+  100% {
+    background-color: lighten($blackTile, 5%);
   }
 }

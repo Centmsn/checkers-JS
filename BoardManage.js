@@ -48,6 +48,7 @@ class BoardManage {
   };
 
   static endGame = (color) => {
+    const button = document.querySelector(".game-stats__button");
     const modal = document.createElement("div");
     modal.classList.add("modal");
 
@@ -61,5 +62,18 @@ class BoardManage {
 
     modal.appendChild(info);
     document.querySelector(".board").appendChild(modal);
+
+    document
+      .querySelectorAll(".pawn", ".king")
+      .forEach((piece) =>
+        piece.removeEventListener("click", Move.showPossibleMoves)
+      );
+
+    clearInterval(clockId);
+    button.classList.add("game-stats__button--flash");
+
+    setTimeout(() => {
+      button.classList.remove("game-stats__button--flash");
+    }, 2000);
   };
 }

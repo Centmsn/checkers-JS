@@ -17,12 +17,12 @@ const mainGameFunc = () => {
 
   // add king for test
   // boardTiles.forEach((tile) => (tile.innerHTML = ""));
-  // Pieces.generatePiece("white", 1, boardTiles[28]);
+  // Pieces.generatePiece("white", 1, boardTiles[56], "king");
   // Pieces.generatePiece("white", 1, boardTiles[26]);
-  // Pieces.generatePiece("black", 1, boardTiles[17]);
-  // Pieces.generatePiece("black", 1, boardTiles[53]);
+  // Pieces.generatePiece("black", 1, boardTiles[35]);
+  // Pieces.generatePiece("black", 1, boardTiles[19]);
   // Pieces.generatePiece("black", 1, boardTiles[49]);
-  // Pieces.generatePiece("black", 1, boardTiles[21]);
+
   // REMOVE BEFORE PLAYING
 
   // start the clock

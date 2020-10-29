@@ -35,12 +35,12 @@ class MoveManage {
       : "white";
 
     if (this.capture) {
-      this.capturePiece(e.target); // *nie resetuje aktywnej
+      this.capturePiece(e.target);
 
-      Pieces.generatePiece(color, 1, e.target, type); //* nie resetuje aktywnej
+      Pieces.generatePiece(color, 1, e.target, type);
 
       BoardManage.clearAvailableTiles();
-      // ! jeśli bicie ma inny pion niż bił przed chwilą nie zmienia tury
+
       if (Object.keys(this.checkIfCapture(color, type)).length > 0) {
         this.checkIfCapture(color, type);
         this.setCapture();
@@ -107,6 +107,7 @@ class MoveManage {
       : "black";
     let possibleMoves = [];
 
+    // TODO: prevent from adding class active if no move available
     e.target.classList.add(`${type}--active`);
 
     if (type === "king") {
@@ -223,12 +224,10 @@ class MoveManage {
       }
     });
 
-    console.log(possibleCaptures);
     Pieces.setPossibleCapture(possibleCaptures);
     return possibleMoves;
   };
 
-  // ! jeśli dwa piony stoją w tym samym rzędzie to król może wybić od razu drugiego pomijając pierwszego
   filterTiles = (direction, diagonal, current, color) => {
     const availableSquares = [];
     const possibleCaptures = [];
@@ -254,7 +253,8 @@ class MoveManage {
                 backward.classList.contains("board__tile--black") &&
                 backward.children.length === 0
               ) {
-                // available moves
+                // only first square found is available
+                if (availableSquares.length === 1) return;
                 availableSquares.push(backward);
                 // pieces that can be captured
                 // required for capture function
@@ -267,7 +267,8 @@ class MoveManage {
                 forward.classList.contains("board__tile--black") &&
                 forward.children.length === 0
               ) {
-                // available moves
+                // only first square found is available
+                if (availableSquares.length === 1) return;
                 availableSquares.push(forward);
                 // pieces that can be captured
                 // required for capture function
