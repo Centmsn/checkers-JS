@@ -9,7 +9,7 @@ class PiecesManage {
     this._blackKings = 0;
 
     // pieces which can be captured
-    this._possibleCaptures = {};
+    this._possibleCaptures = [];
   }
 
   setPossibleCapture = (object) => {
@@ -96,12 +96,7 @@ class PiecesManage {
     for (let i = 0; i < amount; i++) {
       const piece = document.createElement("div");
       piece.classList.add(`${type}`, `${type}--${color}`);
-
-      if (type === "pawn") {
-        piece.addEventListener("click", Move.showPossibleMoves);
-      } else {
-        piece.addEventListener("click", Move.showKingMoves);
-      }
+      piece.addEventListener("click", Move.showPossibleMoves);
 
       if (tile) {
         // generate 1 pawn and append

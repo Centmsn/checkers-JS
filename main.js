@@ -17,12 +17,12 @@ const mainGameFunc = () => {
 
   // add king for test
   // boardTiles.forEach((tile) => (tile.innerHTML = ""));
-  // Pieces.generatePiece("white", 1, boardTiles[35]);
+  // Pieces.generatePiece("white", 1, boardTiles[28]);
+  // Pieces.generatePiece("white", 1, boardTiles[26]);
   // Pieces.generatePiece("black", 1, boardTiles[17]);
   // Pieces.generatePiece("black", 1, boardTiles[53]);
   // Pieces.generatePiece("black", 1, boardTiles[49]);
   // Pieces.generatePiece("black", 1, boardTiles[21]);
-  // addKing(35);
   // REMOVE BEFORE PLAYING
 
   // start the clock
@@ -54,24 +54,6 @@ startBtn.addEventListener("click", mainGameFunc);
 
 const Move = new MoveManage();
 const Pieces = new PiecesManage();
-
-// cheat function to add king
-// just for testing puroposes
-
-const addKing = (num) => {
-  const pawnToPromote = document.querySelectorAll(".board__tile")[num]
-    .firstChild;
-
-  const color = pawnToPromote.classList.contains("pawn--black")
-    ? "black"
-    : "white";
-
-  pawnToPromote.classList.remove("pawn", `pawn--${color}`);
-  pawnToPromote.classList.add("king", `king--${color}`);
-
-  pawnToPromote.removeEventListener("click", Move.showPossibleMoves);
-  pawnToPromote.addEventListener("click", Move.showKingMoves);
-};
 
 // development function to add available class
 const addFlash = (num) => {
