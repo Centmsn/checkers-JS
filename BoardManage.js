@@ -1,5 +1,17 @@
 class BoardManage {
-  static clearAvailableTiles = () => {
+  constructor() {
+    this._recentlyMoved = { prev: null, current: null };
+  }
+
+  setRecentlyMoved = (prev, current) => {
+    this._recentlyMoved = { prev, current };
+  };
+
+  getRecentlyMoved = () => {
+    return this._recentlyMoved;
+  };
+
+  clearAvailableTiles = () => {
     boardTiles.forEach((tile) =>
       tile.classList.remove("board__tile--available")
     );
@@ -8,7 +20,21 @@ class BoardManage {
     );
   };
 
-  static addAvailableTiles = (tiles) => {
+  handleHighlightTiles = (clear = false) => {
+    const { prev, current } = this.getRecentlyMoved();
+
+    if (!prev || !current) return;
+
+    if (clear) {
+      prev.classList.remove("board__tile--previous");
+      current.classList.remove("board__tile--current");
+    } else {
+      prev.classList.add("board__tile--previous");
+      current.classList.add("board__tile--current");
+    }
+  };
+
+  addAvailableTiles = (tiles) => {
     if (typeof tiles !== "object") {
       return;
     }
@@ -27,7 +53,7 @@ class BoardManage {
     });
   };
 
-  static checkIfWin = () => {
+  checkIfWin = () => {
     const { white, black } = Pieces.getPieces();
 
     if (white.pawn === 0 && white.king === 0) {
@@ -37,7 +63,7 @@ class BoardManage {
     }
   };
 
-  static updateGameInfo = (color) => {
+  updateGameInfo = (color) => {
     const stats = document.querySelector(`.game-stats__${color}`);
     const { pawn, king } = Pieces.getPieces(color);
 
@@ -47,7 +73,7 @@ class BoardManage {
     stats.innerHTML = `${pawnCount}<br>${kingCount}`;
   };
 
-  static endGame = (color) => {
+  endGame = (color) => {
     const button = document.querySelector(".game-stats__button");
     const modal = document.createElement("div");
     modal.classList.add("modal");

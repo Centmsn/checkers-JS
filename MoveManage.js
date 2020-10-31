@@ -16,7 +16,7 @@ class MoveManage {
 
   setTurn = () => {
     this.move = !this.move;
-    BoardManage.checkIfWin();
+    Board.checkIfWin();
 
     const whitePieces = document.querySelectorAll(".pawn--white, .king--white");
     const blackPieces = document.querySelectorAll(".pawn--black, .king--black");
@@ -43,10 +43,11 @@ class MoveManage {
   };
 
   movePiece = (e) => {
+    Board.handleHighlightTiles(true);
     const type = document.querySelector(".king--active") ? "king" : "pawn";
 
-    const currentTile = document.querySelector(`.${type}--active`);
-    const color = currentTile.classList.contains(`${type}--black`)
+    const currentPawn = document.querySelector(`.${type}--active`);
+    const color = currentPawn.classList.contains(`${type}--black`)
       ? "black"
       : "white";
 
@@ -56,7 +57,7 @@ class MoveManage {
       this.capturePiece(e.target);
 
       Pieces.generatePiece(color, 1, e.target, type);
-      BoardManage.clearAvailableTiles();
+      Board.clearAvailableTiles();
 
       if (Object.keys(this.checkIfCapture(color, type)).length > 0) {
         this.checkIfCapture(color, type);
@@ -66,17 +67,21 @@ class MoveManage {
       }
     } else {
       Pieces.generatePiece(color, 1, e.target, type);
-
-      BoardManage.clearAvailableTiles();
+      // TODO: set tiles
+      Board.clearAvailableTiles();
       Move.setTurn();
     }
 
-    currentTile.parentNode.innerHTML = "";
+    // *highlights board tiles
+    Board.setRecentlyMoved(currentPawn.parentNode, e.target);
+
+    currentPawn.parentNode.innerHTML = "";
     // *check if pawn should be promoted to king
     Pieces.checkIfKing();
     // *update game stats
-    BoardManage.updateGameInfo("black");
-    BoardManage.updateGameInfo("white");
+    Board.updateGameInfo("black");
+    Board.updateGameInfo("white");
+    Board.handleHighlightTiles();
   };
 
   capturePiece = (target) => {
@@ -115,9 +120,8 @@ class MoveManage {
   };
 
   showPossibleMoves = (e) => {
-    BoardManage.clearAvailableTiles();
+    Board.clearAvailableTiles();
     Pieces.clearActivePiece();
-    console.log(this._capture + " possibleMoves");
 
     const key = parseInt(e.target.parentNode.dataset.key);
     const type = e.target.classList.contains("king") ? "king" : "pawn";
@@ -155,13 +159,12 @@ class MoveManage {
         ).length > 0
       ) {
         const data = this.checkIfCapture(color, type);
-        console.log(data);
 
         const currentPiece = document.querySelector(`.${type}--active`)
           .parentNode.dataset.key;
 
         this.setCapture(true);
-        BoardManage.addAvailableTiles(data[currentPiece]);
+        Board.addAvailableTiles(data[currentPiece]);
         if (document.querySelectorAll(".board__tile--available").length === 0) {
           e.target.classList.remove(`${type}--active`);
 
@@ -169,7 +172,7 @@ class MoveManage {
         }
         return;
       } else {
-        BoardManage.addAvailableTiles(possibleMoves);
+        Board.addAvailableTiles(possibleMoves);
         e.target.classList.add(`${type}--active`);
       }
     }

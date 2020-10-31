@@ -1,13 +1,17 @@
 const boardTiles = [...document.querySelectorAll(".board__tile")];
 let clockId = null;
 
+const Move = new MoveManage();
+const Pieces = new PiecesManage();
+const Board = new BoardManage();
+
 const mainGameFunc = () => {
   const modal = document.querySelector(".modal");
   // reset board
   Pieces.resetPieces();
-  BoardManage.clearAvailableTiles();
-  BoardManage.updateGameInfo("black");
-  BoardManage.updateGameInfo("white");
+  Board.clearAvailableTiles();
+  Board.updateGameInfo("black");
+  Board.updateGameInfo("white");
 
   if (modal) {
     document.querySelector(".board").removeChild(modal);
@@ -52,6 +56,3 @@ const mainGameFunc = () => {
 document
   .querySelector(".game-stats__button")
   .addEventListener("click", mainGameFunc);
-
-const Move = new MoveManage();
-const Pieces = new PiecesManage();

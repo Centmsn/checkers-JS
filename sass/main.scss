@@ -139,6 +139,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 200ms;
   }
 
   &__tile--black {
@@ -160,6 +161,14 @@ body {
       border-radius: 50%;
     }
     cursor: pointer;
+  }
+
+  &__tile--previous {
+    background-color: lighten($blackTile, 8%);
+  }
+
+  &__tile--current {
+    background-color: lighten($blackTile, 4%);
   }
 }
 

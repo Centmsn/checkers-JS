@@ -107,7 +107,7 @@ class PiecesManage {
 
     boardTiles.forEach((tile) => {
       tile.innerHTML = "";
-      BoardManage.clearAvailableTiles();
+      Board.clearAvailableTiles();
     });
     // generate starting pawns
     this.generatePiece("black", 12);
