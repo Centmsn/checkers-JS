@@ -1,5 +1,6 @@
 class PiecesManage {
   constructor() {
+    this.movedPiece = null;
     // number of pawns on the board
     this._whitePawns = 12;
     this._blackPawns = 12;
@@ -15,8 +16,14 @@ class PiecesManage {
     this._kingMoves = {};
   }
 
-  // TODO: refactor to separate objects
-  // TODO: sets available pieces only for pawn or king
+  setMovedPiece = (tile) => {
+    this.movedPiece = tile;
+  };
+
+  getMovedPiece = () => {
+    return this.movedPiece;
+  };
+
   setAvailablePiece = (object, type) => {
     if (type === "king") {
       this._kingMoves = object;

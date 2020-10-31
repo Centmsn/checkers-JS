@@ -17,11 +17,11 @@ const mainGameFunc = () => {
 
   // add king for test
   // boardTiles.forEach((tile) => (tile.innerHTML = ""));
-  // Pieces.generatePiece("white", 1, boardTiles[56], "king");
+  // Pieces.generatePiece("white", 1, boardTiles[28], "king");
+  // Pieces.generatePiece("black", 1, boardTiles[35]);
   // Pieces.generatePiece("black", 1, boardTiles[49]);
-  // Pieces.generatePiece("white", 1, boardTiles[17]);
-  // Pieces.generatePiece("black", 1, boardTiles[10]);
-  // Pieces.generatePiece("black", 1, boardTiles[49]);
+  // Pieces.generatePiece("black", 1, boardTiles[51]);
+  // Pieces.generatePiece("white", 1, boardTiles[23]);
 
   // REMOVE BEFORE PLAYING
 
@@ -49,18 +49,9 @@ const mainGameFunc = () => {
   }, 1000);
 };
 
-const startBtn = document.querySelector(".game-stats__button");
-startBtn.addEventListener("click", mainGameFunc);
+document
+  .querySelector(".game-stats__button")
+  .addEventListener("click", mainGameFunc);
 
 const Move = new MoveManage();
 const Pieces = new PiecesManage();
-
-// development function to add available class
-const addFlash = (num) => {
-  const piece = document.querySelectorAll(".board__tile")[num].firstChild;
-
-  const type = piece.classList.contains("pawn") ? "pawn" : "king";
-
-  piece.classList.remove(`${type}--available`);
-  piece.classList.add(`${type}--available`);
-};

@@ -29,9 +29,6 @@ $body: rgb(228, 228, 228);
   box-shadow: 0 0 6px 0 white;
 }
 
-// shows available piece
-// in development
-
 * {
   margin: 0;
   padding: 0;
@@ -122,9 +119,6 @@ body {
     outline: none;
     font-size: 1.5rem;
     align-self: flex-end;
-
-    &:hover {
-    }
   }
 
   &__button--flash {
@@ -223,7 +217,7 @@ body {
 
 @keyframes flash {
   100% {
-    box-shadow: 0 0 6px white;
+    box-shadow: 0 0 7px lighten($blackTile, 25%);
   }
 }
 

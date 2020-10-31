@@ -1,16 +1,13 @@
 class MoveManage {
   constructor() {
+    // *true if capture is available
     this._capture = false;
-    // white's move if true
+    // *true if it's white's move
     this._move = true;
   }
 
-  setCapture = () => {
-    this.capture = true;
-  };
-
-  removeCapture = () => {
-    this.capture = false;
+  setCapture = (value) => {
+    this.capture = value;
   };
 
   getTurn = () => {
@@ -53,6 +50,8 @@ class MoveManage {
       ? "black"
       : "white";
 
+    Pieces.setMovedPiece(e.target.dataset.key);
+
     if (this.capture) {
       this.capturePiece(e.target);
 
@@ -61,7 +60,7 @@ class MoveManage {
 
       if (Object.keys(this.checkIfCapture(color, type)).length > 0) {
         this.checkIfCapture(color, type);
-        this.setCapture();
+        this.setCapture(true);
       } else {
         Move.setTurn();
       }
@@ -73,8 +72,9 @@ class MoveManage {
     }
 
     currentTile.parentNode.innerHTML = "";
-    // check if pawn should be promoted to king
+    // *check if pawn should be promoted to king
     Pieces.checkIfKing();
+    // *update game stats
     BoardManage.updateGameInfo("black");
     BoardManage.updateGameInfo("white");
   };
@@ -111,12 +111,13 @@ class MoveManage {
 
     squares[index].innerHTML = "";
     Pieces.removePiece(color, type);
-    this.removeCapture();
+    this.setCapture(false);
   };
 
   showPossibleMoves = (e) => {
     BoardManage.clearAvailableTiles();
     Pieces.clearActivePiece();
+    console.log(this._capture + " possibleMoves");
 
     const key = parseInt(e.target.parentNode.dataset.key);
     const type = e.target.classList.contains("king") ? "king" : "pawn";
@@ -154,11 +155,12 @@ class MoveManage {
         ).length > 0
       ) {
         const data = this.checkIfCapture(color, type);
+        console.log(data);
 
         const currentPiece = document.querySelector(`.${type}--active`)
           .parentNode.dataset.key;
 
-        this.setCapture();
+        this.setCapture(true);
         BoardManage.addAvailableTiles(data[currentPiece]);
         if (document.querySelectorAll(".board__tile--available").length === 0) {
           e.target.classList.remove(`${type}--active`);
@@ -185,7 +187,7 @@ class MoveManage {
       const leftDiagonal = [];
 
       if (type === "king") {
-        // right diagonal
+        // *right diagonal
         for (let i = currentSquare - 7; i > 0; i -= 7) {
           rightDiagonal.push(boardTiles[i]);
         }
@@ -194,7 +196,7 @@ class MoveManage {
           rightDiagonal.push(boardTiles[currentSquare + i]);
         }
 
-        // left diagonal
+        // *left diagonal
         for (let i = currentSquare - 9; i > 0; i -= 9) {
           leftDiagonal.push(boardTiles[i]);
         }
@@ -220,7 +222,7 @@ class MoveManage {
         .filter((tile) => tile.classList.contains("board__tile--black"))
         .filter((tile) => tile.dataset.key != currentSquare);
 
-      // possible captures  - right diagonal
+      // *possible captures  - right diagonal
       const right = this.filterTiles(
         7,
         filteredRight,
@@ -228,7 +230,7 @@ class MoveManage {
         oppositeColor
       );
 
-      // possible captures  - left diagonal
+      // *possible captures  - left diagonal
       const left = this.filterTiles(
         9,
         filteredLeft,
@@ -245,11 +247,19 @@ class MoveManage {
       }
 
       if (Object.keys(left.squares).length > 0) {
-        possibleMoves[currentSquare] = left.squares;
+        if (possibleMoves[currentSquare]) {
+          possibleMoves[currentSquare].push(...left.squares);
+        } else {
+          possibleMoves[currentSquare] = left.squares;
+        }
       }
 
       if (Object.keys(right.squares).length > 0) {
-        possibleMoves[currentSquare] = right.squares;
+        if (possibleMoves[currentSquare]) {
+          possibleMoves[currentSquare].push(...right.squares);
+        } else {
+          possibleMoves[currentSquare] = right.squares;
+        }
       }
     });
 
@@ -287,8 +297,14 @@ class MoveManage {
                 backward.classList.contains("board__tile--black") &&
                 backward.children.length === 0
               ) {
-                // only first square found is available
-                if (availableSquares.length === 1) return;
+                if (
+                  availableSquares.find(
+                    (square) => square.dataset.key > current
+                  )
+                ) {
+                  return;
+                }
+
                 availableSquares.push(backward);
                 // pieces that can be captured
                 // required for capture function
@@ -301,8 +317,14 @@ class MoveManage {
                 forward.classList.contains("board__tile--black") &&
                 forward.children.length === 0
               ) {
-                // only first square found is available
-                if (availableSquares.length === 1) return;
+                if (
+                  availableSquares.find(
+                    (square) => square.dataset.key < current
+                  )
+                ) {
+                  return;
+                }
+
                 availableSquares.push(forward);
                 // pieces that can be captured
                 // required for capture function
