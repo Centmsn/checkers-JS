@@ -21,14 +21,8 @@ class MoveManage {
     this.move = !this.move;
     BoardManage.checkIfWin();
 
-    const whitePieces = document.querySelectorAll(
-      ".pawn--white",
-      ".king--white"
-    );
-    const blackPieces = document.querySelectorAll(
-      ".pawn--black",
-      "king--black"
-    );
+    const whitePieces = document.querySelectorAll(".pawn--white, .king--white");
+    const blackPieces = document.querySelectorAll(".pawn--black, .king--black");
 
     if (this.move) {
       blackPieces.forEach((piece) =>
@@ -63,7 +57,6 @@ class MoveManage {
       this.capturePiece(e.target);
 
       Pieces.generatePiece(color, 1, e.target, type);
-
       BoardManage.clearAvailableTiles();
 
       if (Object.keys(this.checkIfCapture(color, type)).length > 0) {
@@ -148,11 +141,18 @@ class MoveManage {
       ];
     }
 
+    // !checkIfCapture is called 3 times
+    // !refactor required
     if (
       (color === "white" && this.getTurn()) ||
       (color === "black" && !this.getTurn())
     ) {
-      if (Object.keys(this.checkIfCapture(color, type)).length > 0) {
+      if (
+        Object.keys(this.checkIfCapture(color, type)).length > 0 ||
+        Object.keys(
+          this.checkIfCapture(color, type === "king" ? "pawn" : "king")
+        ).length > 0
+      ) {
         const data = this.checkIfCapture(color, type);
 
         const currentPiece = document.querySelector(`.${type}--active`)
@@ -163,13 +163,7 @@ class MoveManage {
         if (document.querySelectorAll(".board__tile--available").length === 0) {
           e.target.classList.remove(`${type}--active`);
 
-          for (let piece in Pieces.getAvailablePiece()) {
-            boardTiles[piece].firstChild.classList.add("available");
-
-            setTimeout(() => {
-              boardTiles[piece].firstChild.classList.remove("available");
-            }, 1000);
-          }
+          Pieces.highlightPiece();
         }
         return;
       } else {
@@ -259,7 +253,11 @@ class MoveManage {
       }
     });
 
-    Pieces.setAvailablePiece(possibleMoves);
+    if (type === "king") {
+      Pieces.setAvailablePiece(possibleMoves, "king");
+    } else {
+      Pieces.setAvailablePiece(possibleMoves, "pawn");
+    }
     Pieces.setPossibleCapture(possibleCaptures);
     return possibleMoves;
   };

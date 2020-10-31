@@ -11,15 +11,31 @@ class PiecesManage {
     // pieces which can be captured
     this._possibleCaptures = [];
     // piece which can capture
-    this._availablePiece = {};
+    this._pawnMoves = {};
+    this._kingMoves = {};
   }
 
-  setAvailablePiece = (object) => {
-    this._availablePiece = object;
+  // TODO: refactor to separate objects
+  // TODO: sets available pieces only for pawn or king
+  setAvailablePiece = (object, type) => {
+    if (type === "king") {
+      this._kingMoves = object;
+    } else {
+      this._pawnMoves = object;
+    }
   };
 
-  getAvailablePiece = () => {
-    return this._availablePiece;
+  getAvailablePiece = (type) => {
+    switch (type) {
+      case "king":
+        return this._kingMoves;
+
+      case "pawn":
+        return this._pawnMoves;
+
+      default:
+        return [this._pawnMoves, this._kingMoves];
+    }
   };
 
   setPossibleCapture = (object) => {
@@ -98,6 +114,28 @@ class PiecesManage {
       .forEach((piece) =>
         piece.classList.remove("pawn--active", "king--active")
       );
+  };
+
+  highlightPiece = () => {
+    const [pawns, kings] = this.getAvailablePiece();
+
+    for (let pawn in pawns) {
+      if (boardTiles[pawn].firstChild.classList.contains("available")) return;
+      boardTiles[pawn].firstChild.classList.add("available");
+
+      setTimeout(() => {
+        boardTiles[pawn].firstChild.classList.remove("available");
+      }, 1000);
+    }
+
+    for (let king in kings) {
+      if (boardTiles[king].firstChild.classList.contains("available")) return;
+
+      boardTiles[king].firstChild.classList.add("available");
+      setTimeout(() => {
+        boardTiles[king].firstChild.classList.remove("available");
+      }, 1000);
+    }
   };
 
   // generate piece and append them to DOM
