@@ -1,11 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap");
-
-$blackTile: rgb(17, 97, 17);
-$whiteTile: rgb(221, 219, 209);
-$blackPieces: rgb(41, 40, 37);
-$whitePieces: rgb(209, 209, 209);
-$border: rgb(128, 128, 128);
-$body: rgb(228, 228, 228);
+@import "./variables";
 
 %piece {
   flex-basis: 80%;

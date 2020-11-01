@@ -280,7 +280,8 @@ class MoveManage {
     const availableSquares = [];
     const possibleCaptures = [];
 
-    diagonal.forEach((tile) => {
+    diagonal.forEach((tile, index) => {
+      const prev = diagonal[index - 1];
       const forward =
         tile.dataset.key > current
           ? null
@@ -308,6 +309,9 @@ class MoveManage {
                 ) {
                   return;
                 }
+                if (prev && prev.children.length !== 0) {
+                  return;
+                }
 
                 availableSquares.push(backward);
                 // pieces that can be captured
@@ -328,7 +332,9 @@ class MoveManage {
                 ) {
                   return;
                 }
-
+                if (prev && prev.children.length !== 0) {
+                  return;
+                }
                 availableSquares.push(forward);
                 // pieces that can be captured
                 // required for capture function
