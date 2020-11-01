@@ -73,10 +73,16 @@ class BoardManage {
     stats.innerHTML = `${pawnCount}<br>${kingCount}`;
   };
 
+  createModal = (...classes) => {
+    const modal = document.createElement("div");
+    modal.classList.add(...classes);
+
+    return modal;
+  };
+
   endGame = (color) => {
     const button = document.querySelector(".game-stats__button");
-    const modal = document.createElement("div");
-    modal.classList.add("modal");
+    const modal = this.createModal("modal");
 
     const info = document.createElement("p");
 
@@ -101,5 +107,22 @@ class BoardManage {
     setTimeout(() => {
       button.classList.remove("game-stats__button--flash");
     }, 2000);
+  };
+
+  handleCurtain = () => {
+    const curtain = document.querySelectorAll(".curtain");
+
+    curtain.forEach((el) => {
+      el.classList.toggle("curtain--closed");
+      el.classList.toggle("curtain--open");
+    });
+
+    setTimeout(() => {
+      curtain.forEach((el) => {
+        el.classList.toggle("curtain--closed");
+        el.classList.toggle("curtain--open");
+        throttle = true;
+      });
+    }, 1000);
   };
 }

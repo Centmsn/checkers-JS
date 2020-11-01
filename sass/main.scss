@@ -73,6 +73,11 @@ body {
   text-align: center;
   color: white;
   background-color: rgba(0, 0, 0, 0.774);
+  transition: opacity 250ms;
+
+  &--invisible {
+    opacity: 0;
+  }
 }
 
 .game-stats {
@@ -172,6 +177,36 @@ body {
   }
 }
 
+.curtain {
+  position: absolute;
+  width: 50%;
+  background-color: darken($blackTile, 5%);
+
+  &--left {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform-origin: 0%;
+    border-right: 5px solid $border;
+  }
+
+  &--right {
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transform-origin: 100%;
+    border-left: 5px solid $border;
+  }
+
+  &--open {
+    animation: openCurtain 400ms 0s 1 forwards ease-out;
+  }
+
+  &--closed {
+    animation: closeCurtain 400ms 0s 1 forwards ease-in;
+  }
+}
+
 .pawn {
   @extend %piece;
   &--black {
@@ -226,12 +261,29 @@ body {
 
 @keyframes flash {
   100% {
-    box-shadow: 0 0 7px lighten($blackTile, 25%);
+    box-shadow: 0 0 5px 2px lighten($blackTile, 25%);
   }
 }
 
 @keyframes btnFlash {
   100% {
-    background-color: lighten($blackTile, 5%);
+    background-color: lighten($blackTile, 10%);
+  }
+}
+
+@keyframes openCurtain {
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes closeCurtain {
+  0% {
+    transform: scaleX(0);
+  }
+
+  80%,
+  100% {
+    transform: scaleX(1);
   }
 }

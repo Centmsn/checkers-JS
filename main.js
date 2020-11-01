@@ -1,23 +1,34 @@
 const boardTiles = [...document.querySelectorAll(".board__tile")];
+const startBtn = document.querySelector(".game-stats__button");
 let clockId = null;
+let throttle = true;
 
 const Move = new MoveManage();
 const Pieces = new PiecesManage();
 const Board = new BoardManage();
 
 const mainGameFunc = () => {
+  if (!throttle) return;
+
   const modal = document.querySelector(".modal");
-  // reset board
-  Pieces.resetPieces();
-  Board.clearAvailableTiles();
-  Board.updateGameInfo("black");
-  Board.updateGameInfo("white");
 
   if (modal) {
-    document.querySelector(".board").removeChild(modal);
+    modal.classList.add("modal--invisible");
+    setTimeout(() => document.querySelector(".board").removeChild(modal), 300);
   }
-  // whites moves if set to true
-  Move.setTurn();
+  throttle = false;
+
+  Board.handleCurtain();
+
+  // reset board
+  setTimeout(() => {
+    Pieces.resetPieces();
+    Board.clearAvailableTiles();
+    Board.updateGameInfo("black");
+    Board.updateGameInfo("white");
+    Board.handleHighlightTiles(true);
+    Move.setTurn();
+  }, 500);
 
   // add king for test
   // boardTiles.forEach((tile) => (tile.innerHTML = ""));
@@ -53,6 +64,22 @@ const mainGameFunc = () => {
   }, 1000);
 };
 
-document
-  .querySelector(".game-stats__button")
-  .addEventListener("click", mainGameFunc);
+startBtn.addEventListener("click", mainGameFunc);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const curtainLeft = Board.createModal(
+    "curtain",
+    "curtain--left",
+    "curtain--open"
+  );
+  const curtainRight = Board.createModal(
+    "curtain",
+    "curtain--right",
+    "curtain--open"
+  );
+
+  const gameBoard = document.querySelector(".board");
+
+  gameBoard.appendChild(curtainLeft);
+  gameBoard.appendChild(curtainRight);
+});

@@ -84,6 +84,7 @@ class MoveManage {
     Board.handleHighlightTiles();
   };
 
+  // ! multiple pieces can capture during one turn
   capturePiece = (target) => {
     const possibleMoves = Pieces.getPossibleCapture();
     const targetKey = parseInt(target.dataset.key);
