@@ -30,21 +30,16 @@ const mainGameFunc = () => {
     Move.setTurn();
   }, 500);
 
-  // add king for test
-  // setTimeout(() => {
-  //   boardTiles.forEach((tile) => (tile.innerHTML = ""));
-  //   Pieces.generatePiece("white", 1, boardTiles[60], "king");
-  //   Pieces.generatePiece("black", 1, boardTiles[35]);
-  //   Pieces.generatePiece("black", 1, boardTiles[42]);
-  //   Pieces.generatePiece("black", 1, boardTiles[37]);
-  //   Pieces.generatePiece("black", 1, boardTiles[53]);
-  //   Pieces.generatePiece("black", 1, boardTiles[51]);
-  // }, 700);
-
-  // Pieces.generatePiece("black", 1, boardTiles[51]);
-  // Pieces.generatePiece("white", 1, boardTiles[23]);
-
-  // REMOVE BEFORE PLAYING
+  setTimeout(() => {
+    boardTiles.forEach((tile) => (tile.innerHTML = ""));
+    Pieces.generatePiece("white", 1, boardTiles[17], "king");
+    Pieces.generatePiece("black", 1, boardTiles[35]);
+    Pieces.generatePiece("black", 1, boardTiles[42]);
+    Pieces.generatePiece("black", 1, boardTiles[37]);
+    Pieces.generatePiece("black", 1, boardTiles[53]);
+    Pieces.generatePiece("black", 1, boardTiles[51]);
+    Pieces.generatePiece("white", 1, boardTiles[26]);
+  }, 700);
 
   // start the clock
   const clock = document.querySelector(".game-stats__clock");

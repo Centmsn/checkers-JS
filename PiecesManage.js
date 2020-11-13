@@ -17,6 +17,12 @@ class PiecesManage {
   }
 
   setMovedPiece = (tile) => {
+    if (this.movedPiece) {
+      this.prevMovedPiece = this.movedPiece;
+    } else {
+      this.prevMovedPiece = null;
+    }
+
     this.movedPiece = tile;
   };
 

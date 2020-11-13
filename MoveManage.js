@@ -59,7 +59,9 @@ class MoveManage {
       Pieces.generatePiece(color, 1, e.target, type);
       Board.clearAvailableTiles();
 
-      if (Object.keys(this.checkIfCapture(color, type)).length > 0) {
+      const keys = Object.keys(this.checkIfCapture(color, type));
+
+      if (keys.filter((key) => key != Pieces.prevMovedPiece).length > 0) {
         this.checkIfCapture(color, type);
         this.setCapture(true);
       } else {
@@ -160,7 +162,6 @@ class MoveManage {
         ).length > 0
       ) {
         const data = this.checkIfCapture(color, type);
-
         const currentPiece = document.querySelector(`.${type}--active`)
           .parentNode.dataset.key;
 
