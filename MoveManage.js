@@ -277,6 +277,7 @@ class MoveManage {
     return possibleMoves;
   };
 
+  // King can capture even if he is blocked by a pawn of the same color as he is
   filterTiles = (direction, diagonal, current, color) => {
     const availableSquares = [];
     const possibleCaptures = [];
